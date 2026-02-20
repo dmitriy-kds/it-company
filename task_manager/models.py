@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class TaskType(models.Model):
@@ -16,3 +17,6 @@ class Position(models.Model):
     class Meta:
         ordering = ["name"]
         verbose_name_plural = "task types"
+
+    def __str__(self):
+        return self.name
