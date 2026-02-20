@@ -25,3 +25,21 @@ class TaskAdmin(admin.ModelAdmin):
     ]
     list_filter = ["status", "priority", "task_type"]
     search_fields = ["name", "description"]
+
+@admin.register(Worker)
+class WorkerAdmin(UserAdmin):
+    list_display = [
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "position"
+    ]
+    list_filter = ["position"]
+    search_fields = ["username", "first_name", "last_name"]
+    fieldsets = UserAdmin.fieldsets + (
+        ("Additional Info", {"fields": ("position", )}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ("Additional Info", {"fields": ("position", )}),
+    )
