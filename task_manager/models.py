@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from it_company import settings
+
+
 class TaskType(models.Model):
     name = models.CharField(max_length=100)
 
@@ -31,3 +34,32 @@ class Worker(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}, {self.position}"
+
+class Task(models.Model):
+    PRIORITY_CHOICES = (
+        (4, "Urgent"),
+        (3, "High Priority"),
+        (2, "Medium Priority"),
+        (1, "Low Priority"),
+    )
+    STATUS_CHOICES = (
+        ("New", "New"),
+        ("In Progress", "In Progress"),
+        ("Done", "Done"),
+    )
+
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+    deadline = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="New")
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
+    task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="tasks")
+
+    class Meta:
+        ordering = ["deadline"]
+        verbose_name = "task"
+        verbose_name_plural = "tasks"
+
+    def __str__(self):
+        return self.name
