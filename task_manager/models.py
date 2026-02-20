@@ -19,13 +19,13 @@ class Position(models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = "task types"
+        verbose_name_plural = "positions"
 
     def __str__(self):
         return self.name
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True)
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True, related_name="workers")
 
     class Meta:
         ordering = ["last_name"]
@@ -33,7 +33,8 @@ class Worker(AbstractUser):
         verbose_name_plural = "workers"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}, {self.position}"
+        pos = self.position.name if self.position else "No position"
+        return f"{self.first_name} {self.last_name}, {pos}"
 
 class Task(models.Model):
     PRIORITY_CHOICES = (
@@ -57,7 +58,7 @@ class Task(models.Model):
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="tasks")
 
     class Meta:
-        ordering = ["deadline"]
+        ordering = ["deadline", "-priority"]
         verbose_name = "task"
         verbose_name_plural = "tasks"
 
