@@ -5,6 +5,9 @@ from task_manager.models import Task, Worker, Position
 
 
 def index(request: HttpRequest) -> HttpResponse:
+    counter = request.session.get("counter", 0)
+    counter += 1
+    request.session["counter"] = counter
     context = {
         "num_employees": Worker.objects.count(),
         "num_positions": Position.objects.count(),
@@ -12,5 +15,6 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_new_tasks": Task.objects.filter(status="New").count(),
         "num_completed_tasks": Task.objects.filter(status="Done").count(),
         "num_in_progress_tasks": Task.objects.filter(status="Done").count(),
+        "counter": counter,
     }
     return render(request, template_name="task_manager/index.html", context=context)
