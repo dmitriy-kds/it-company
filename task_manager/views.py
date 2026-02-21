@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
+from django.views import generic
 
-from task_manager.models import Task, Worker, Position
+from .models import Task, Worker, Position
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -18,3 +20,14 @@ def index(request: HttpRequest) -> HttpResponse:
         "counter": counter,
     }
     return render(request, template_name="task_manager/index.html", context=context)
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    context_object_name = "position_list"
+    template_name = "task_manager/position_list.html"
+    paginate_by = 8
+
+class PositionDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Position
+    template_name = "task_manager/position_detail.html"
+    queryset = Position.objects.all().prefetch_related("workers")
