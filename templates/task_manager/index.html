@@ -1,0 +1,12 @@
+{% extends  "base.html" %}
+
+{% block content %}
+  <h1>Task Manager</h1>
+  All tasks: {{ num_tasks }}
+  <br>
+  New tasks: {{ num_new_tasks }}
+  <br>
+  Tasks in progress: {{ num_in_progress_tasks }}
+  <br>
+  Completed: {{ num_completed_tasks }}
+{% endblock %}
