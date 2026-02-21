@@ -1,11 +1,13 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
-from task_manager.models import Task
+from task_manager.models import Task, Worker, Position
 
 
 def index(request: HttpRequest) -> HttpResponse:
     context = {
+        "num_employees": Worker.objects.count(),
+        "num_positions": Position.objects.count(),
         "num_tasks": Task.objects.count(),
         "num_new_tasks": Task.objects.filter(status="New").count(),
         "num_completed_tasks": Task.objects.filter(status="Done").count(),
