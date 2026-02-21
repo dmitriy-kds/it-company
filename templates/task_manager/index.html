@@ -2,11 +2,17 @@
 
 {% block content %}
   <h1>Task Manager</h1>
-  All tasks: {{ num_tasks }}
+  {{ num_employees }} employees
+  <br>
+  {{ num_positions }} specialities
+  <br>
+  {{ num_tasks }} tasks
   <br>
   New tasks: {{ num_new_tasks }}
   <br>
   Tasks in progress: {{ num_in_progress_tasks }}
   <br>
   Completed: {{ num_completed_tasks }}
+  <br>
+  This page has been viewed {{ counter }} times
 {% endblock %}
