@@ -34,6 +34,12 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "task_manager/worker_detail.html"
     queryset = Worker.objects.all().select_related("position").prefetch_related("tasks")
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        worker = Worker.objects.get(pk=self.kwargs["pk"])
+        context["in_progress"] = worker.tasks.filter(status="In Progress")
+        context["done"] = worker.tasks.filter(status="Done")
+        return context
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     pass
