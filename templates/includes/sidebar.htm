@@ -3,9 +3,12 @@
     <a href="{% url 'task_manager:index' %}">Home</a>
   </li>
   <li>
-    <a href="">Team</a>
+    <a href="{% url 'task_manager:position-list' %}">Positions</a>
   </li>
   <li>
-    <a href="">Tasks</a>
+    <a href="{% url 'task_manager:task-list' %}">Tasks</a>
+  </li>
+  <li>
+    <a href="{% url 'task_manager:worker-list' %}">Team</a>
   </li>
 </ul>

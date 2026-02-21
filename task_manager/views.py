@@ -21,6 +21,35 @@ def index(request: HttpRequest) -> HttpResponse:
     }
     return render(request, template_name="task_manager/index.html", context=context)
 
+
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    model = Worker
+    context_object_name = "worker_list"
+    template_name = "task_manager/worker_list.html"
+    paginate_by = 8
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    template_name = "task_manager/worker_detail.html"
+    queryset = Worker.objects.all().select_related("position").prefetch_related("tasks")
+
+
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    pass
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    pass
+
+
+class TaskTypeListView(LoginRequiredMixin, generic.ListView):
+    pass
+
+
+class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+    pass
+
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     context_object_name = "position_list"
