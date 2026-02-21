@@ -20,9 +20,9 @@ urlpatterns = [
     path("tasks/", TaskListView.as_view(), name="task-list"),
     path("tasks/<int:pk>/", TaskDetailView.as_view(), name="task-detail"),
     path("positions/", PositionListView.as_view(), name="position-list"),
-    path("position/<int:pk>/", PositionDetailView.as_view(), name="position-detail"),
-    path("task-type/", TaskTypeListView.as_view(), name="task-type-list"),
-    path("task-type/<int:pk>/", TaskTypeDetailView.as_view(), name="task-type-detail"),
+    path("positions/<int:pk>/", PositionDetailView.as_view(), name="position-detail"),
+    path("task-types/", TaskTypeListView.as_view(), name="task-type-list"),
+    path("task-types/<int:pk>/", TaskTypeDetailView.as_view(), name="task-type-detail"),
 ]
 
 app_name = "task_manager"
