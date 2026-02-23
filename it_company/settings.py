@@ -120,3 +120,5 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 AUTH_USER_MODEL = "task_manager.Worker"
+
+LOGIN_REDIRECT_URL = "/"
