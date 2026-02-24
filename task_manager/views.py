@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
@@ -110,3 +112,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 @require_POST
 def task_toggle_status_view(request: HttpRequest) -> HttpResponse:
     pass
+
+@login_required
+def profile_redirect(request: HttpRequest) -> HttpResponse:
+    return redirect("task_manager:worker-detail", pk=request.user.pk)
