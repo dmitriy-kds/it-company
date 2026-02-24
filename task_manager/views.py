@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views import generic
+from django.views.decorators.http import require_POST
 
 from .models import Task, Worker, Position
 
@@ -29,6 +31,10 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 8
 
 
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    pass
+
+
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     template_name = "task_manager/worker_detail.html"
@@ -41,7 +47,20 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         context["done"] = worker.tasks.filter(status="Done")
         return context
 
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    pass
+
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    pass
+
+
 class TaskListView(LoginRequiredMixin, generic.ListView):
+    pass
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     pass
 
 
@@ -49,20 +68,45 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     pass
 
 
-class TaskTypeListView(LoginRequiredMixin, generic.ListView):
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     pass
 
 
-class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     pass
 
-class PositionListView(LoginRequiredMixin, generic.ListView):
-    model = Position
-    context_object_name = "position_list"
-    template_name = "task_manager/position_list.html"
-    paginate_by = 8
 
-class PositionDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Position
-    template_name = "task_manager/position_detail.html"
-    queryset = Position.objects.all().prefetch_related("workers")
+@login_required
+@require_POST
+def task_assign_view(request: HttpRequest) -> HttpResponse:
+    pass
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    pass
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    pass
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    pass
+
+
+class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    pass
+
+
+class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    pass
+
+
+class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    pass
+
+
+@login_required
+@require_POST
+def task_toggle_status_view(request: HttpRequest) -> HttpResponse:
+    pass
