@@ -1,0 +1,23 @@
+<ul>
+  {% if user.is_authenticated %}
+    User: <a href="{% url 'task_manager:worker-detail' pk=user.pk%}">{{ user.username }}</a>
+    <br>
+    <form action="{% url 'logout' %}" method="POST">
+      {% csrf_token %}
+      {{ post.as_p }}
+      <input type="submit" value="Log out">
+    </form>
+  {% else %}
+    <a href="{% url 'login' %}">Log in</a>
+  {% endif %}
+  <br>
+  <li>
+    <a href="{% url 'task_manager:index' %}">Home</a>
+  </li>
+  <li>
+    <a href="{% url 'task_manager:task-list' %}">Tasks</a>
+  </li>
+  <li>
+    <a href="{% url 'task_manager:worker-list' %}">Team</a>
+  </li>
+</ul>
