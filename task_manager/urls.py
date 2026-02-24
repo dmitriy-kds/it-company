@@ -20,7 +20,7 @@ from task_manager.views import (
     TaskTypeCreateView,
     TaskTypeUpdateView,
     TaskTypeDeleteView,
-    task_toggle_status,
+    task_toggle_status_view,
 )
 
 urlpatterns = [
@@ -42,7 +42,7 @@ urlpatterns = [
     path("task-types/create/", TaskTypeCreateView.as_view(), name="task-type-create"),
     path("task-types/<int:pk>/update/", TaskTypeUpdateView.as_view(), name="task-type-update"),
     path("task-types/<int:pk>/delete/", TaskTypeDeleteView.as_view(), name="task-type-delete"),
-    path("tasks/<id:pk>/toggle-status/", task_toggle_status, name="task-toggle-status"),
+    path("tasks/<id:pk>/toggle-status/", task_toggle_status_view, name="task-toggle-status"),
 ]
 
 app_name = "task_manager"
