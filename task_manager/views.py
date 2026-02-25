@@ -56,6 +56,12 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Worker
+    form_class = WorkerCreationForm
+    success_url = reverse_lazy("task_manager:worker-list")
+
+
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     pass
 
