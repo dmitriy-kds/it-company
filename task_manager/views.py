@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-from .forms import WorkerCreationForm
+from .forms import WorkerCreationForm, WorkerUpdateForm
 from .models import Task, Worker, Position
 
 
@@ -58,7 +58,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    form_class = WorkerCreationForm
+    form_class = WorkerUpdateForm
     success_url = reverse_lazy("task_manager:worker-list")
 
 
