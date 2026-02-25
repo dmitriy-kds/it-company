@@ -4,12 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
 from .forms import WorkerCreationForm, WorkerUpdateForm
-from .models import Task, Worker, Position
+from .models import Task, Worker, Position, TaskType
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -107,11 +107,17 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = TaskType
+    fields = "__all__"
+    template_name = "task_manager/task_type_form.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
+    model = TaskType
+    fields = "__all__"
+    template_name = "task_manager/task_type_form.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
