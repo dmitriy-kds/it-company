@@ -109,7 +109,9 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
-    pass
+    model = Position
+    template_name = "task_manager/position_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:worker-list")
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
