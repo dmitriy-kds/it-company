@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
@@ -45,6 +47,8 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         worker = Worker.objects.get(pk=self.kwargs["pk"])
+        context["today"] = date.today()
+        context["new"] = worker.tasks.filter(status="New")
         context["in_progress"] = worker.tasks.filter(status="In Progress")
         context["done"] = worker.tasks.filter(status="Done")
         return context
