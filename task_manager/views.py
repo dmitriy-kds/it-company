@@ -95,7 +95,10 @@ def task_assign_view(request: HttpRequest) -> HttpResponse:
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = TaskType
+    fields = "__all__"
+    template_name = "task_manager/position_form.html"
+    success_url = reverse_lazy("task_manager:workers-list")
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
