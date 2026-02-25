@@ -2,13 +2,13 @@ from datetime import date
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views import generic
 from django.views.decorators.http import require_POST
 
+from .forms import WorkerCreationForm
 from .models import Task, Worker, Position
 
 
@@ -36,7 +36,9 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = Worker
+    form_class = WorkerCreationForm
+    success_url = reverse_lazy("task_manager:worker-list")
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
@@ -52,10 +54,6 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         context["in_progress"] = worker.tasks.filter(status="In Progress")
         context["done"] = worker.tasks.filter(status="Done")
         return context
-
-
-class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
 
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
