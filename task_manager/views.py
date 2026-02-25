@@ -121,7 +121,9 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
-    pass
+    model = TaskType
+    template_name = "task_manager/task_type_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 @login_required
