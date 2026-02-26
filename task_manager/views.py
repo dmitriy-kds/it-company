@@ -69,7 +69,17 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
-    pass
+    model = Task
+    context_object_name = "task_list"
+    template_name = "task_manager/task_list.html"
+    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees")
+    paginate_by = 8
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["today"] = date.today()
+        return context
+
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
