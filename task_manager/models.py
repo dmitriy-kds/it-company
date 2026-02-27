@@ -64,3 +64,12 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def next_status(self) -> str:
+        status_map ={
+            "New": "In Progress",
+            "In Progress": "Done",
+            "Done": "New",
+        }
+        return status_map[self.status]
