@@ -87,8 +87,13 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
-    pass
+    model = Task
+    template_name = "task_manager/task_detail.html"
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["today"] = date.today()
+        return context
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     pass
