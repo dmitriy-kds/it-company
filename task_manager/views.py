@@ -83,7 +83,10 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = Task
+    fields = "__all__"
+    template_name = "task_manager/task_form.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -96,11 +99,16 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
+    model = Task
+    fields = "__all__"
+    template_name = "task_manager/task_form.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
-    pass
+    model = Task
+    template_name = "task_manager/task_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 @login_required
