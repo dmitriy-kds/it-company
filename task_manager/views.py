@@ -113,8 +113,14 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 @require_POST
-def task_assign_view(request: HttpRequest) -> HttpResponse:
-    pass
+def task_assign_view(request: HttpRequest, pk: int):
+    user = request.user
+    task = Task.objects.get(pk=pk)
+    if user in task.assignees.all():
+        task.assignees.remove(user)
+    else:
+        task.assignees.add(user)
+    return redirect("task_manager:task-detail", pk=pk)
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
