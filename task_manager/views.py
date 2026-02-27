@@ -1,4 +1,5 @@
 from datetime import date
+from xml.dom import DOMSTRING_SIZE_ERR
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -165,8 +166,12 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 @require_POST
-def task_toggle_status_view(request: HttpRequest) -> HttpResponse:
-    pass
+def task_toggle_status_view(request: HttpRequest, pk: int) -> HttpResponse:
+    task = Task.objects.get(pk=pk)
+    task.status = task.next_status
+    task.save(update_fields=["status"])
+    return redirect("task_manager:task-detail", pk=pk)
+
 
 @login_required
 def profile_redirect(request: HttpRequest) -> HttpResponse:
