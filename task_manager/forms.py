@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django import forms
 
 from task_manager.models import Worker
 
@@ -26,3 +27,7 @@ class WorkerUpdateForm(UserChangeForm):
             "position",
             "email"
         ]
+
+
+class TaskNameDescriptionSearchForm(forms.Form):
+    name_or_description = forms.CharField(max_length=50, required=False, label="")
