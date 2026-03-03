@@ -3,6 +3,7 @@ from xml.dom import DOMSTRING_SIZE_ERR
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -80,6 +81,22 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context["today"] = date.today()
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_by = self.request.GET.get("sort", "deadline")
+
+        allowed_sorts = [
+            "name", "-name",
+            "task_type__name", "-task_type__name",
+            "deadline", "-deadline",
+            "priority", "-priority",
+            "status", "-status"
+        ]
+        if sort_by in allowed_sorts:
+            return queryset.order_by(sort_by)
+
+        return queryset
 
 
 
