@@ -10,7 +10,8 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, WorkerFirstLastNameSearchForm
+from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, WorkerFirstLastNameSearchForm, \
+    TaskCreateForm
 from .models import Task, Worker, Position, TaskType
 
 
@@ -121,12 +122,11 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return queryset
 
 
-
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
     template_name = "task_manager/task_form.html"
     success_url = reverse_lazy("task_manager:task-list")
+    form_class = TaskCreateForm
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
