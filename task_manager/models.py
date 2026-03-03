@@ -1,8 +1,25 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+from datetime import datetime, timedelta
 
+from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.db import models
 from it_company import settings
 
+
+def validate_task_deadline(date):
+    latest_deadline = datetime.strptime(
+        "2100-01-01", "%Y-%m-%d"
+    ).date()
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    if yesterday > date:
+        raise ValidationError(
+            f"Deadline can't be in the past!"
+        )
+    elif date > latest_deadline:
+        raise ValidationError(
+            f"Can't set deadline beyond {latest_deadline}!"
+        )
 
 class TaskType(models.Model):
     name = models.CharField(max_length=100)
@@ -49,9 +66,10 @@ class Task(models.Model):
         ("Done", "Done"),
     )
 
+
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    deadline = models.DateField()
+    deadline = models.DateField(validators=[validate_task_deadline])
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="New")
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="tasks")
@@ -67,7 +85,7 @@ class Task(models.Model):
 
     @property
     def next_status(self) -> str:
-        status_map ={
+        status_map = {
             "New": "In Progress",
             "In Progress": "Done",
             "Done": "New",
