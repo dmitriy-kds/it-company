@@ -10,7 +10,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm
+from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, WorkerFirstLastNameSearchForm
 from .models import Task, Worker, Position, TaskType
 
 
@@ -36,6 +36,20 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     template_name = "task_manager/worker_list.html"
     paginate_by = 8
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        first_or_last_name = self.request.GET.get("first_or_last_name", "")
+        context["search_form"] = WorkerFirstLastNameSearchForm(initial={"first_or_last_name": first_or_last_name})
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Worker.objects.all().select_related("position").prefetch_related("tasks")
+        form = WorkerFirstLastNameSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                Q(first_name__icontains=form.cleaned_data["first_or_last_name"]) | Q(last_name__icontains=form.cleaned_data["first_or_last_name"])
+            )
+        return queryset
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
