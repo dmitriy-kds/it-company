@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 
-from task_manager.models import Worker
+from task_manager.models import Worker, Task
 
 
 class WorkerCreationForm(UserCreationForm):
@@ -13,6 +13,28 @@ class WorkerCreationForm(UserCreationForm):
             "position",
             "email",
         )
+
+
+class TaskCreateForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "status",
+            "priority",
+            "task_type",
+            "assignees",
+        ]
+
+    def clean_deadline(self):
+        date = self.cleaned_data["deadline"]
+        if date.weekday() == 6:
+            raise forms.ValidationError(
+                "We don't work on Sundays!"
+            )
+        return date
 
 
 class WorkerUpdateForm(UserChangeForm):
