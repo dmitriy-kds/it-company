@@ -1,5 +1,5 @@
 from datetime import date
-from xml.dom import DOMSTRING_SIZE_ERR
+from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,7 +10,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-from .forms import WorkerCreationForm, WorkerUpdateForm
+from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm
 from .models import Task, Worker, Position, TaskType
 
 
@@ -78,13 +78,21 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 8
 
     def get_context_data(self, **kwargs) -> dict:
-        context = super().get_context_data(**kwargs)
+        context = super(TaskListView, self).get_context_data(**kwargs)
         context["today"] = date.today()
+        name_or_description = self.request.GET.get("name_or_description", "")
+        context["search_form"] = TaskNameDescriptionSearchForm(initial={"name_or_description": name_or_description})
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
         sort_by = self.request.GET.get("sort", "deadline")
+        form = TaskNameDescriptionSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                Q(name__icontains=form.cleaned_data["name_or_description"]) | Q(description__icontains=form.cleaned_data["name_or_description"]),
+            )
+
 
         allowed_sorts = [
             "name", "-name",
