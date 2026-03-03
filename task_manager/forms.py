@@ -31,3 +31,7 @@ class WorkerUpdateForm(UserChangeForm):
 
 class TaskNameDescriptionSearchForm(forms.Form):
     name_or_description = forms.CharField(max_length=50, required=False, label="")
+
+
+class WorkerFirstLastNameSearchForm(forms.Form):
+    first_or_last_name = forms.CharField(max_length=50, required=False, label="")
