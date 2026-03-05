@@ -104,10 +104,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         sort_by = self.request.GET.get("sort", "deadline")
         form = TaskNameDescriptionSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
+            queryset = queryset.filter(
                 Q(name__icontains=form.cleaned_data["name_or_description"]) | Q(description__icontains=form.cleaned_data["name_or_description"]),
             )
-
 
         allowed_sorts = [
             "name", "-name",
@@ -164,14 +163,14 @@ def task_assign_view(request: HttpRequest, pk: int):
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
-    model = TaskType
+    model = Position
     fields = "__all__"
     template_name = "task_manager/position_form.html"
     success_url = reverse_lazy("task_manager:worker-list")
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = TaskType
+    model = Position
     fields = "__all__"
     template_name = "task_manager/position_form.html"
     success_url = reverse_lazy("task_manager:worker-list")
