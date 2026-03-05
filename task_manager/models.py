@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date
 
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
@@ -6,19 +6,15 @@ from django.db import models
 from it_company import settings
 
 
-def validate_task_deadline(date):
-    latest_deadline = datetime.strptime(
-        "2100-01-01", "%Y-%m-%d"
-    ).date()
-    today = date.today()
-    yesterday = today - timedelta(days=1)
-    if yesterday > date:
+def validate_task_deadline(deadline):
+    max_deadline = date(2100, 1, 1)
+    if deadline < date.today():
         raise ValidationError(
             f"Deadline can't be in the past!"
         )
-    elif date > latest_deadline:
+    elif deadline > max_deadline:
         raise ValidationError(
-            f"Can't set deadline beyond {latest_deadline}!"
+            f"Can't set deadline beyond {max_deadline}!"
         )
 
 class TaskType(models.Model):
