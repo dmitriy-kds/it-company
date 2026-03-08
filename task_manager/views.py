@@ -6,12 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import generic
 from django.views.decorators.http import require_POST
 
 from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, WorkerFirstLastNameSearchForm, \
-    TaskCreateForm, PositionCreateForm
+    TaskCreateForm
 from .models import Task, Worker, Position, TaskType
 
 
