@@ -25,7 +25,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_tasks": Task.objects.count(),
         "num_new_tasks": Task.objects.filter(status="New").count(),
         "num_completed_tasks": Task.objects.filter(status="Done").count(),
-        "num_in_progress_tasks": Task.objects.filter(status="Done").count(),
+        "num_in_progress_tasks": Task.objects.filter(status="In Progress").count(),
         "counter": counter,
     }
     return render(request, template_name="task_manager/index.html", context=context)
