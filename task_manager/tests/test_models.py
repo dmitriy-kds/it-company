@@ -72,6 +72,14 @@ class ModelsTests(TestCase):
             validate_task_deadline(deadline)
         self.assertEqual(context.exception.message, expected_message)
 
-    def test_task_next_status_property(self):
+    def test_task_next_status_new(self):
         self.task.status = "New"
         self.assertEqual(self.task.next_status, "In Progress")
+
+    def test_task_next_status_in_progress(self):
+        self.task.status = "In Progress"
+        self.assertEqual(self.task.next_status, "Done")
+
+    def test_task_next_status_done(self):
+        self.task.status = "Done"
+        self.assertEqual(self.task.next_status, "New")
