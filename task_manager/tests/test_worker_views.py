@@ -72,6 +72,20 @@ class PrivateWorkerTests(TestCase):
         self.assertContains(response, self.another_worker.first_name)
         self.assertNotContains(response, self.worker.first_name)
 
+    def test_worker_list_pagination(self):
+        for i in range(7):
+            get_user_model().objects.create_user(
+                username=f"username_{i}",
+                first_name=f"first_name_{i}",
+                last_name=f"last_name_{i}",
+                email=f"email_{i}@email.com",
+                password=f"12o8in1g*{i}",
+            )
+        url = reverse("task_manager:worker-list")
+        response = self.client.get(url)
+        self.assertTrue(response.context["is_paginated"])
+        self.assertEqual(len(response.context["worker_list"]), 8)
+
     def test_worker_create_returns_200(self):
         url = reverse("task_manager:worker-create")
         response = self.client.get(url)
