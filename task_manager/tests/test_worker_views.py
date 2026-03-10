@@ -14,27 +14,27 @@ class PublicWorkerTests(TestCase):
     def test_worker_list_login_required(self):
         url = reverse("task_manager:worker-list")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_worker_create_login_required(self):
         url = reverse("task_manager:worker-create")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_worker_detail_login_required(self):
         url = reverse("task_manager:worker-detail", kwargs={"pk": self.worker.pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_worker_update_login_required(self):
         url = reverse("task_manager:worker-update", kwargs={"pk": self.worker.pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_worker_delete_login_required(self):
         url = reverse("task_manager:worker-delete", kwargs={"pk": self.worker.pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + url)
 
 
 class PrivateWorkerTests(TestCase):
