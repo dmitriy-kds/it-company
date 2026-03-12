@@ -1,12 +1,10 @@
 from datetime import date
-
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from it_company import settings
 
-
-def validate_task_deadline(deadline):
+def validate_task_deadline(deadline: date) -> None:
     max_deadline = date(2100, 1, 1)
     if deadline < date.today():
         raise ValidationError(
@@ -16,6 +14,7 @@ def validate_task_deadline(deadline):
         raise ValidationError(
             f"Can't set deadline beyond {max_deadline}!"
         )
+
 
 class TaskType(models.Model):
     name = models.CharField(max_length=100)
@@ -27,6 +26,7 @@ class TaskType(models.Model):
     def __str__(self):
         return self.name
 
+
 class Position(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -37,8 +37,15 @@ class Position(models.Model):
     def __str__(self):
         return self.name
 
+
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True, related_name="workers")
+    position = models.ForeignKey(
+        Position,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="workers"
+    )
 
     class Meta:
         ordering = ["last_name"]
@@ -48,6 +55,7 @@ class Worker(AbstractUser):
     def __str__(self):
         pos = self.position.name if self.position else "No position"
         return f"{self.first_name} {self.last_name}, {pos}"
+
 
 class Task(models.Model):
     PRIORITY_CHOICES = (
@@ -62,14 +70,25 @@ class Task(models.Model):
         ("Done", "Done"),
     )
 
-
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     deadline = models.DateField(validators=[validate_task_deadline])
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="New")
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="New"
+    )
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
-    task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="tasks")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="tasks")
+    task_type = models.ForeignKey(
+        TaskType,
+        on_delete=models.CASCADE,
+        related_name="tasks"
+    )
+    assignees = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name="tasks"
+    )
 
     class Meta:
         ordering = ["deadline", "-priority"]
