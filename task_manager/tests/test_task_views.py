@@ -31,27 +31,42 @@ class PublicTaskTests(TestCase):
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_detail_login_required(self):
-        url = reverse("task_manager:task-detail", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-detail",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_update_login_required(self):
-        url = reverse("task_manager:task-update", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-update",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_delete_login_required(self):
-        url = reverse("task_manager:task-delete", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-delete",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_toggle_status_login_required(self):
-        url = reverse("task_manager:task-toggle-status", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-toggle-status",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_assign_login_required(self):
-        url = reverse("task_manager:task-assign", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-assign",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
@@ -103,13 +118,19 @@ class PrivateTaskTests(TestCase):
 
     def test_task_list_search_by_name(self):
         url = reverse("task_manager:task-list")
-        response = self.client.get(url, data={"name_or_description": self.another_task.name})
+        response = self.client.get(
+            url,
+            data={"name_or_description": self.another_task.name}
+        )
         self.assertContains(response, self.another_task.description)
         self.assertNotContains(response, self.task.description)
 
     def test_task_list_search_by_description(self):
         url = reverse("task_manager:task-list")
-        response = self.client.get(url, data={"name_or_description": self.another_task.description})
+        response = self.client.get(
+            url,
+            data={"name_or_description": self.another_task.description}
+        )
         self.assertContains(response, self.another_task.description)
         self.assertNotContains(response, self.task.description)
 
@@ -182,7 +203,10 @@ class PrivateTaskTests(TestCase):
             "priority": 3,
             "task_type": self.task_type.pk,
         }
-        response = self.client.post(reverse("task_manager:task-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:task-create"),
+            data=form_data
+        )
         new_task = Task.objects.get(name=form_data["name"])
         self.assertEqual(new_task.name, form_data["name"])
         self.assertEqual(new_task.description, form_data["description"])
@@ -190,7 +214,9 @@ class PrivateTaskTests(TestCase):
         self.assertEqual(new_task.status, form_data["status"])
         self.assertEqual(new_task.priority, form_data["priority"])
         self.assertEqual(new_task.task_type.pk, form_data["task_type"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-list"))
 
     def test_task_create_post_with_invalid_data(self):
         form_data = {
@@ -201,18 +227,27 @@ class PrivateTaskTests(TestCase):
             "priority": 3,
             "task_type": "",
         }
-        response = self.client.post(reverse("task_manager:task-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:task-create"),
+            data=form_data
+        )
         new_task = Task.objects.filter(description=form_data["description"])
         self.assertFalse(new_task.exists())
         self.assertEqual(response.status_code, 200)
 
     def test_task_update_returns_200(self):
-        url = reverse("task_manager:task-update", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-update",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_task_update_get_is_pre_populated(self):
-        url = reverse("task_manager:task-update", kwargs={"pk": self.another_task.pk})
+        url = reverse(
+            "task_manager:task-update",
+            kwargs={"pk": self.another_task.pk}
+        )
         response = self.client.get(url)
         self.assertContains(response, self.another_task.description)
 
@@ -225,49 +260,102 @@ class PrivateTaskTests(TestCase):
             "priority": 2,
             "task_type": self.task_type.pk,
         }
-        response = self.client.post(reverse("task_manager:task-update", kwargs={"pk": self.another_task.pk}), data=form_data)
+        response = self.client.post(
+            reverse(
+                "task_manager:task-update",
+                kwargs={"pk": self.another_task.pk}
+            ),
+            data=form_data
+        )
         self.another_task.refresh_from_db()
         self.assertEqual(self.another_task.name, form_data["name"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-list")
+        )
 
     def test_task_delete_returns_200(self):
-        url = reverse("task_manager:task-delete", kwargs={"pk": self.another_task.pk})
+        url = reverse(
+            "task_manager:task-delete",
+            kwargs={"pk": self.another_task.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_task_delete_post(self):
-        response = self.client.post(reverse("task_manager:task-delete", kwargs={"pk": self.another_task.pk}))
+        response = self.client.post(
+            reverse(
+                "task_manager:task-delete",
+                kwargs={"pk": self.another_task.pk}
+            )
+        )
         another_task = Task.objects.filter(description="another_description")
         self.assertFalse(another_task.exists())
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-list")
+        )
 
     def test_task_detail_returns_200(self):
-        url = reverse("task_manager:task-detail", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-detail",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_task_detail_context(self):
-        url = reverse("task_manager:task-detail", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-detail",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.get(url)
         self.assertIn("today", response.context)
 
     def test_task_add_assignee(self):
         self.assertNotIn(self.worker, self.task.assignees.all())
-        url = reverse("task_manager:task-assign", kwargs={"pk": self.task.pk})
+        url = reverse(
+            "task_manager:task-assign",
+            kwargs={"pk": self.task.pk}
+        )
         response = self.client.post(url, data={"assignee": self.worker.pk})
         self.assertIn(self.worker, self.task.assignees.all())
-        self.assertRedirects(response, reverse("task_manager:task-detail", kwargs={"pk": self.task.pk}))
+        self.assertRedirects(
+            response,
+            reverse(
+                "task_manager:task-detail",
+                kwargs={"pk": self.task.pk}
+            )
+        )
 
     def test_task_remove_assignee(self):
        self.task.assignees.add(self.worker)
-       url = reverse("task_manager:task-assign", kwargs={"pk": self.task.pk})
+       url = reverse(
+           "task_manager:task-assign",
+           kwargs={"pk": self.task.pk}
+       )
        response = self.client.post(url)
        self.assertNotIn(self.worker, self.task.assignees.all())
-       self.assertRedirects(response, reverse("task_manager:task-detail", kwargs={"pk": self.task.pk}))
+       self.assertRedirects(
+           response,
+           reverse(
+               "task_manager:task-detail",
+               kwargs={"pk": self.task.pk}
+           )
+       )
 
     def test_task_toggle_status(self):
-        url = reverse("task_manager:task-toggle-status", kwargs={"pk": self.another_task.pk})
+        url = reverse(
+            "task_manager:task-toggle-status",
+            kwargs={"pk": self.another_task.pk}
+        )
         response = self.client.post(url)
         self.another_task.refresh_from_db()
         self.assertEqual(self.another_task.status, "New")
-        self.assertRedirects(response, reverse("task_manager:task-detail", kwargs={"pk": self.another_task.pk}))
+        self.assertRedirects(
+            response,
+            reverse(
+                "task_manager:task-detail",
+                kwargs={"pk": self.another_task.pk}
+            )
+        )
