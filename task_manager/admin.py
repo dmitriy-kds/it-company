@@ -8,10 +8,12 @@ class TaskTypeAdmin(admin.ModelAdmin):
     list_display = ["name"]
     search_fields = ["name"]
 
+
 @admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):
     list_display = ["name"]
     search_fields = ["name"]
+
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
@@ -25,6 +27,7 @@ class TaskAdmin(admin.ModelAdmin):
     ]
     list_filter = ["status", "priority", "task_type"]
     search_fields = ["name", "description"]
+
 
 @admin.register(Worker)
 class WorkerAdmin(UserAdmin):
