@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {{ worker.first_name }} {{ worker.last_name }}
+  </h1>
+  ____________________________
+  <h5>{{ worker.position }}</h5>
+  <br>
+  {% if user == worker %}
+    <h5>My tasks:</h5>
+  {% else %}
+    <h5>Tasks:</h5>
+  {% endif %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Type</th>
+        <th scope="col">Deadline</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in worker.tasks.all %}
+        <tr class="{% if task.status == "Done" %}{% elif task.priority == 4 %}table-warning{% elif task.deadline < today %}table-danger{% endif %}">
+          <td>{{ forloop.counter }}</td>
+                  <td>
+            <a href="{% url 'task_manager:task-detail' pk=task.pk %}">{{ task.name }}</a>
+          </td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.task_type.name }}</td>
+          <td class="{% if task.status == "Done" %}{% elif task.deadline < today %}bg-danger{% endif %}">{{ task.deadline }}</td>
+          <td class="{% if task.status == "Done" %}{% elif task.priority == 4 %}bg-warning{% endif %}">{{ task.get_priority_display }}</td>
+          <td>{{ task.status }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">No tasks</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <a class="btn btn-primary" href="{% url 'task_manager:worker-create' %}">Add employee</a>
+  <a class="btn btn-primary" href="{% url 'task_manager:position-list' %}">Manage positions</a>
+  <br>
+  <br>
+  <form action="" method="GET">
+    {{ search_form|crispy }}
+    <input type="submit" value="🔎">
+  </form>
+  {% for worker in worker_list %}
+    <ul>
+      <li class="list-group-item d-flex {% if user == worker %}active{% endif %} justify-content-between align-items-center">
+        <a href="{% url 'task_manager:worker-detail' pk=worker.pk%}"
+        class="{% if user == worker %}text-dark{% endif %}">
+          {{ worker.first_name }} {{ worker.last_name }}, {{ worker.position }}
+          {% if worker == user %}
+            (ME)
+          {% endif %}
+        </a>
+        <span>
+          <a class="text-decoration-none" href="{% url 'task_manager:worker-update' pk=worker.pk%}">📝</a>
+          <a class="text-decoration-none" href="{% url 'task_manager:worker-delete' pk=worker.pk%}">❌</a>
+        </span>
+      </li>
+    </ul>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+{% endblock %}
