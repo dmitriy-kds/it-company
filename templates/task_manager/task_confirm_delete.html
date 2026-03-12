@@ -1,12 +1,35 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
+{% block title %}<title>Delete Task — Task Manager</title>{% endblock %}
 
 {% block content %}
-  <h3>You're about to delete task {{ task.name }}</h3>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Tasks</div>
+    <h1 class="page-title">Delete Task</h1>
+  </div>
+</div>
+
+<div class="form-card">
+  <div class="delete-warning">
+    <div class="delete-warning-icon">⚠</div>
+    <div>
+      <div class="delete-warning-title">Are you sure?</div>
+      <div class="delete-warning-subtitle">
+        You are about to permanently delete task <span class="delete-target">{{ object.name }}</span>.
+        This action cannot be undone.
+      </div>
+    </div>
+  </div>
+
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form|crispy }}
-    <a class="btn btn-primary" href="{% url 'task_manager:task-list' %}">Back</a>
-    <input class="btn btn-danger" type="submit" value="Confirm delete">
+    <div class="form-actions">
+      <button type="submit" class="btn-danger-action">Delete Task</button>
+      <a href="{% url 'task_manager:task-list' %}" class="btn-secondary-action">← Cancel</a>
+    </div>
   </form>
+</div>
+
 {% endblock %}
