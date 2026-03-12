@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="card">
+    <h5 class="card-header">{{ task.name }}</h5>
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Status: <strong>{{ task.status }}</strong></span>
+      <form class="btn" action="{% url 'task_manager:task-toggle-status' pk=task.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-outline-primary">
+          Mark as <strong>{{ task.next_status }}</strong>
+        </button>
+      </form>
+    </div>
+    <h6 class="card-header {% if task.priority == 4 %}bg-warning{% endif %}">Priority: {{ task.get_priority_display }}</h6>
+    <h6 class="card-header {% if task.status == "Done" %}{% elif task.deadline < today %}bg-danger{% endif %}">Deadline: {{ task.deadline }}</h6>
+    <div class="card-body">
+      <p class="card-text font-italic">{{ task.task_type }}</p>
+      <p class="card-text">{{ task.description }}</p>
+      <div class="card-yext">
+        <p>Assigned to:</p>
+        <ul>
+          {% for assignee in task.assignees.all %}
+            <li>
+              <a href="{% url 'task_manager:worker-detail' pk=assignee.pk%}">{{ assignee.first_name }} {{ assignee.last_name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      {% if user in task.assignees.all %}
+        <form action="{% url 'task_manager:task-assign' pk=task.pk%}" method="POST">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <input class="btn btn-primary" type="submit" value="Drop task">
+        </form>
+      {% else %}
+        <form action="{% url 'task_manager:task-assign' pk=task.pk%}" method="POST">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <input class="btn btn-primary" type="submit" value="Take task">
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
