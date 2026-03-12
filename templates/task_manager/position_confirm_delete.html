@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h3>You're about to delete position {{ position.name }}</h3>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <a class="btn btn-primary" href="{% url 'task_manager:task-list' %}">Back</a>
+    <input class="btn btn-danger" type="submit" value="Confirm delete">
+  </form>
+{% endblock %}
