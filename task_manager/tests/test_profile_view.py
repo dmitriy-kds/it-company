@@ -27,4 +27,10 @@ class PrivateProfileTests(TestCase):
         )
         self.client.force_login(self.worker)
         response = self.client.get(reverse("profile"))
-        self.assertRedirects(response, reverse("task_manager:worker-detail", kwargs={"pk": self.worker.pk}))
+        self.assertRedirects(
+            response,
+            reverse(
+                "task_manager:worker-detail",
+                kwargs={"pk": self.worker.pk}
+            )
+        )
