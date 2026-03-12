@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from task_manager.models import TaskType
 
+
 class PublicTaskTypeTests(TestCase):
     def setUp(self):
         self.task_type = TaskType.objects.create(
@@ -20,12 +21,18 @@ class PublicTaskTypeTests(TestCase):
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_type_update_login_required(self):
-        url = reverse("task_manager:task-type-update", kwargs={"pk": self.task_type.pk})
+        url = reverse(
+            "task_manager:task-type-update",
+            kwargs={"pk": self.task_type.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_task_type_delete_login_required(self):
-        url = reverse("task_manager:task-type-delete", kwargs={"pk": self.task_type.pk})
+        url = reverse(
+            "task_manager:task-type-delete",
+            kwargs={"pk": self.task_type.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
@@ -68,27 +75,42 @@ class PrivateTaskTypeTests(TestCase):
         form_data = {
             "name": "valid_name"
         }
-        response = self.client.post(reverse("task_manager:task-type-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:task-type-create"),
+            data=form_data
+        )
         new_task_type = TaskType.objects.get(name=form_data["name"])
         self.assertEqual(new_task_type.name, form_data["name"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-type-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-type-list")
+        )
 
     def test_task_type_create_post_with_invalid_data(self):
         form_data = {
             "name": ""
         }
-        response = self.client.post(reverse("task_manager:task-type-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:task-type-create"),
+            data=form_data
+        )
         new_task_type = TaskType.objects.filter(name=form_data["name"])
         self.assertFalse(new_task_type.exists())
         self.assertEqual(response.status_code, 200)
 
     def test_task_type_update_returns_200(self):
-        url = reverse("task_manager:task-type-update", kwargs={"pk": self.task_type.pk})
+        url = reverse(
+            "task_manager:task-type-update",
+            kwargs={"pk": self.task_type.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_task_type_update_get_is_pre_populated(self):
-        url = reverse("task_manager:task-type-update", kwargs={"pk": self.task_type.pk})
+        url = reverse(
+            "task_manager:task-type-update",
+            kwargs={"pk": self.task_type.pk}
+        )
         response = self.client.get(url)
         self.assertContains(response, self.task_type.name)
 
@@ -96,18 +118,38 @@ class PrivateTaskTypeTests(TestCase):
         form_data = {
             "name": "updated_name"
         }
-        response = self.client.post(reverse("task_manager:task-type-update", kwargs={"pk": self.task_type.pk}), data=form_data)
+        response = self.client.post(
+            reverse(
+                "task_manager:task-type-update",
+                kwargs={"pk": self.task_type.pk}
+            ),
+            data=form_data
+        )
         self.task_type.refresh_from_db()
         self.assertEqual(self.task_type.name, form_data["name"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-type-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-type-list")
+        )
 
     def test_task_type_delete_returns_200(self):
-        url = reverse("task_manager:task-type-delete", kwargs={"pk": self.task_type.pk})
+        url = reverse(
+            "task_manager:task-type-delete",
+            kwargs={"pk": self.task_type.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_task_type_delete_post(self):
-        response = self.client.post(reverse("task_manager:task-type-delete", kwargs={"pk": self.task_type.pk}))
+        response = self.client.post(
+            reverse(
+                "task_manager:task-type-delete",
+                kwargs={"pk": self.task_type.pk}
+            )
+        )
         task_type = TaskType.objects.filter(name=self.task_type.name)
         self.assertFalse(task_type.exists())
-        self.assertRedirects(response, expected_url=reverse("task_manager:task-type-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:task-type-list")
+        )
