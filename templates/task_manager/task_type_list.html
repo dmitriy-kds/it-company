@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <a class="btn btn-primary" href="{% url 'task_manager:task-type-create' %}">Create task type</a>
+  <br>
+  <br>
+  {% for task_type in task_type_list %}
+    <ul>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ task_type.name }}
+        <span>
+          <a class="text-decoration-none" href="{% url 'task_manager:task-type-update' pk=task_type.pk%}">📝</a>
+          <a class="text-decoration-none" href="{% url 'task_manager:task-type-delete' pk=task_type.pk%}">❌</a>
+        </span>
+      </li>
+    </ul>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+{% endblock %}
