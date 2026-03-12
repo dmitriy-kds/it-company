@@ -2,89 +2,125 @@
 {% load query_transform %}
 {% load crispy_forms_filters %}
 
+{% block title %}<title>Tasks — Task Manager</title>{% endblock %}
+
 {% block content %}
-  <a class="btn btn-primary" href="{% url 'task_manager:task-create' %}">Create new task</a>
-  <a class="btn btn-primary" href="{% url 'task_manager:task-type-list' %}">Manage task types</a>
-  <br>
-  <br>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Manager</div>
+    <h1 class="page-title">Tasks</h1>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'task_manager:task-type-list' %}" class="btn-secondary-action">Task Types</a>
+    <a href="{% url 'task_manager:task-create' %}" class="btn-primary-action">+ Create Task</a>
+  </div>
+</div>
+
+<div class="search-bar">
   <form action="" method="GET">
     {{ search_form|crispy }}
-    <input type="submit" value="Search">
+    <button type="submit" class="search-submit">🔎</button>
   </form>
-  <br>
-  <table class="table table-bordered">
+</div>
+
+<div class="table-card">
+  <table class="table mb-0">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">
-          <div class="d-flex align-items-center text-nowrap">
+        <th>#</th>
+        <th>
+          <div class="sort-header">
             Name
-            <span class="ml-1">
-              <a class="text-decoration-none" href=?{% query_transform request sort="name" %}>⬇️</a>
-              <a class="text-decoration-none" href=?{% query_transform request sort="-name" %}>⬆️</a>
+            <span class="sort-arrows">
+              <a href="?{% query_transform request sort="name" %}">↑</a>
+              <a href="?{% query_transform request sort="-name" %}">↓</a>
             </span>
           </div>
         </th>
-        <th scope="col">Description</th>
-        <th scope="col">
-          <div class="d-flex align-items-center text-nowrap">
+        <th>Description</th>
+        <th>
+          <div class="sort-header">
             Type
-            <span class="ml-1">
-              <a class="text-decoration-none" href=?{% query_transform request sort="task_type__name" %}>⬇️</a>
-              <a class="text-decoration-none" href=?{% query_transform request sort="-task_type__name" %}>⬆️</a>
+            <span class="sort-arrows">
+              <a href="?{% query_transform request sort="task_type__name" %}">↑</a>
+              <a href="?{% query_transform request sort="-task_type__name" %}">↓</a>
             </span>
           </div>
         </th>
-        <th scope="col">
-          <div class="d-flex align-items-center text-nowrap">
+        <th>
+          <div class="sort-header">
             Deadline
-            <span class="ml-1">
-              <a class="text-decoration-none" href=?{% query_transform request sort="deadline" %}>⬇️</a>
-              <a class="text-decoration-none" href=?{% query_transform request sort="-deadline" %}>⬆️</a>
+            <span class="sort-arrows">
+              <a href="?{% query_transform request sort="deadline" %}">↑</a>
+              <a href="?{% query_transform request sort="-deadline" %}">↓</a>
             </span>
           </div>
         </th>
-        <th scope="col">
-          <div class="d-flex align-items-center text-nowrap">
+        <th>
+          <div class="sort-header">
             Priority
-            <span class="ml-1">
-              <a class="text-decoration-none" href=?{% query_transform request sort="priority" %}>⬇️</a>
-              <a class="text-decoration-none" href=?{% query_transform request sort="-priority" %}>⬆️</a>
+            <span class="sort-arrows">
+              <a href="?{% query_transform request sort="priority" %}">↑</a>
+              <a href="?{% query_transform request sort="-priority" %}">↓</a>
             </span>
           </div>
         </th>
-        <th scope="col">
-          <div class="d-flex align-items-center text-nowrap">
+        <th>
+          <div class="sort-header">
             Status
-            <span class="ml-1">
-              <a class="text-decoration-none" href=?{% query_transform request sort="status" %}>⬇️</a>
-              <a class="text-decoration-none" href=?{% query_transform request sort="-status" %}>⬆️</a>
+            <span class="sort-arrows">
+              <a href="?{% query_transform request sort="status" %}">↑</a>
+              <a href="?{% query_transform request sort="-status" %}">↓</a>
             </span>
           </div>
         </th>
-        <th scope="col">Edit</th>
-        <th scope="col">Del</th>
+        <th></th>
       </tr>
-      </thead>
-      <tbody>
+    </thead>
+    <tbody>
       {% for task in task_list %}
-        <tr class="{% if task.status == "Done" %}{% elif task.priority == 4 %}table-warning{% elif task.deadline < today %}table-danger{% endif %}">
-          <td>{{ forloop.counter }}</td>
+        <tr class="
+          {% if task.status == 'Done' %}row-done
+          {% elif task.priority == 4 %}row-urgent
+          {% elif task.deadline < today %}row-overdue
+          {% endif %}
+        ">
+          <td class="text-muted mono-text">{{ forloop.counter }}</td>
           <td>
-            <a href="{% url 'task_manager:task-detail' pk=task.pk%}">{{ task.name }}</a>
+            <a href="{% url 'task_manager:task-detail' pk=task.pk %}" class="table-link">
+              {{ task.name }}
+            </a>
           </td>
-          <td>{{ task.description }}</td>
-          <td>{{ task.task_type.name }}</td>
-          <td class="{% if task.status == "Done" %}{% elif task.deadline < today %}bg-danger{% endif %}">{{ task.deadline }}</td>
-          <td class="{% if task.status == "Done" %}{% elif task.priority == 4 %}bg-warning{% endif %}">{{ task.get_priority_display }}</td>
-          <td>{{ task.status }}</td>
-          <td><a class="text-decoration-none" href="{% url 'task_manager:task-update' pk=task.pk%}">📝</a></td>
-          <td><a class="text-decoration-none" href="{% url 'task_manager:task-delete' pk=task.pk%}">❌</a></td>
+          <td class="text-muted">{{ task.description }}</td>
+          <td><span class="type-badge">{{ task.task_type.name }}</span></td>
+          <td class="mono-text {% if task.status != 'Done' and task.deadline < today %}text-danger{% endif %}">
+            {{ task.deadline }}
+          </td>
+          <td class="{% if task.status != 'Done' and task.priority == 4 %}text-warning{% endif %}">
+            {{ task.get_priority_display }}
+          </td>
+          <td>
+            <span class="status-badge status-{{ task.status|lower|slugify }}">
+              {{ task.status }}
+            </span>
+          </td>
+          <td>
+            <div class="list-row-actions" style="opacity: 1;">
+              <a href="{% url 'task_manager:task-update' pk=task.pk %}" class="row-action-btn" title="Edit">✏️</a>
+              <a href="{% url 'task_manager:task-delete' pk=task.pk %}" class="row-action-btn" title="Delete">🗑</a>
+            </div>
+          </td>
         </tr>
       {% empty %}
-        <tr><td colspan="7">No tasks</td></tr>
+        <tr>
+          <td colspan="8" class="list-empty">No tasks found.</td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% include "includes/pagination.html" %}
+</div>
+
+{% include "includes/pagination.html" %}
+
 {% endblock %}
