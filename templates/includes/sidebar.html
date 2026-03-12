@@ -1,23 +1,30 @@
-<ul>
+{% load static %}
+
+<a href="{% url 'task_manager:index' %}" class="nav-brand">⬡ Task Manager</a>
+
+<nav class="sidebar-nav">
+  <a href="{% url 'task_manager:index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+    <span class="nav-icon">◈</span> Dashboard
+  </a>
+  <a href="{% url 'task_manager:task-list' %}" class="{% if 'task' in request.resolver_match.url_name %}active{% endif %}">
+    <span class="nav-icon">◧</span> Tasks
+  </a>
+  <a href="{% url 'task_manager:worker-list' %}" class="{% if 'worker' in request.resolver_match.url_name %}active{% endif %}">
+    <span class="nav-icon">◎</span> Team
+  </a>
+</nav>
+
+<div class="sidebar-user">
   {% if user.is_authenticated %}
-    User: <a href="{% url 'task_manager:worker-detail' pk=user.pk%}">{{ user.username }}</a>
-    <br>
+    <div class="sidebar-username-label">signed in as</div>
+    <a href="{% url 'task_manager:worker-detail' pk=user.pk %}" class="sidebar-username">
+      {{ user.username }}
+    </a>
     <form action="{% url 'logout' %}" method="POST">
       {% csrf_token %}
-      {{ post.as_p }}
-      <input type="submit" value="Log out">
+      <button type="submit" class="btn-logout">log out</button>
     </form>
   {% else %}
-    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'login' %}" class="btn-login">log in</a>
   {% endif %}
-  <br>
-  <li>
-    <a href="{% url 'task_manager:index' %}">Home</a>
-  </li>
-  <li>
-    <a href="{% url 'task_manager:task-list' %}">Tasks</a>
-  </li>
-  <li>
-    <a href="{% url 'task_manager:worker-list' %}">Team</a>
-  </li>
-</ul>
+</div>
