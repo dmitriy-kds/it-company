@@ -1,20 +1,31 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
+{% block title %}<title>Task Types — Task Manager</title>{% endblock %}
 
 {% block content %}
-  <a class="btn btn-primary" href="{% url 'task_manager:task-type-create' %}">Create task type</a>
-  <br>
-  <br>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Manager</div>
+    <h1 class="page-title">Task Types</h1>
+  </div>
+  <a href="{% url 'task_manager:task-type-create' %}" class="btn-primary-action">+ Create Task Type</a>
+</div>
+
+<div class="list-card">
   {% for task_type in task_type_list %}
-    <ul>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ task_type.name }}
-        <span>
-          <a class="text-decoration-none" href="{% url 'task_manager:task-type-update' pk=task_type.pk%}">📝</a>
-          <a class="text-decoration-none" href="{% url 'task_manager:task-type-delete' pk=task_type.pk%}">❌</a>
-        </span>
-      </li>
-    </ul>
+    <div class="list-row">
+      <span class="list-row-name">{{ task_type.name }}</span>
+      <div class="list-row-actions">
+        <a href="{% url 'task_manager:task-type-update' pk=task_type.pk %}" class="row-action-btn" title="Edit">✏️</a>
+        <a href="{% url 'task_manager:task-type-delete' pk=task_type.pk %}" class="row-action-btn" title="Delete">🗑</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="list-empty">No task types found.</div>
   {% endfor %}
-  {% include "includes/pagination.html" %}
+</div>
+
+{% include "includes/pagination.html" %}
+
 {% endblock %}
