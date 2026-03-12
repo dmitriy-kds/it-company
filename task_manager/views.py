@@ -1,6 +1,5 @@
 from datetime import date
 from django.db.models import Q
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
@@ -9,9 +8,13 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.decorators.http import require_POST
-
-from .forms import WorkerCreationForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, WorkerFirstLastNameSearchForm, \
+from .forms import (
+    WorkerCreationForm,
+    WorkerUpdateForm,
+    TaskNameDescriptionSearchForm,
+    WorkerFirstLastNameSearchForm,
     TaskCreateForm
+)
 from .models import Task, Worker, Position, TaskType
 
 
@@ -25,10 +28,16 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_tasks": Task.objects.count(),
         "num_new_tasks": Task.objects.filter(status="New").count(),
         "num_completed_tasks": Task.objects.filter(status="Done").count(),
-        "num_in_progress_tasks": Task.objects.filter(status="In Progress").count(),
+        "num_in_progress_tasks": Task.objects.filter(
+            tatus="In Progress"
+        ).count(),
         "counter": counter,
     }
-    return render(request, template_name="task_manager/index.html", context=context)
+    return render(
+        request,
+        template_name="task_manager/index.html",
+        context=context
+    )
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
@@ -40,17 +49,26 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         first_or_last_name = self.request.GET.get("first_or_last_name", "")
-        context["search_form"] = WorkerFirstLastNameSearchForm(initial={"first_or_last_name": first_or_last_name})
+        context["search_form"] = WorkerFirstLastNameSearchForm(
+            initial={"first_or_last_name": first_or_last_name}
+        )
         return context
 
     def get_queryset(self) -> QuerySet:
-        queryset = Worker.objects.all().select_related("position").prefetch_related("tasks")
+        queryset = (
+            Worker.objects.all()
+            .select_related("position")
+            .prefetch_related("tasks")
+        )
         form = WorkerFirstLastNameSearchForm(self.request.GET)
+        search = form.cleaned_data["first_or_last_name"]
         if form.is_valid():
             return queryset.filter(
-                Q(first_name__icontains=form.cleaned_data["first_or_last_name"]) | Q(last_name__icontains=form.cleaned_data["first_or_last_name"])
+                Q(first_name__icontains=search)
+                | Q(last_name__icontains=search)
             )
         return queryset
+
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
@@ -61,7 +79,11 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     template_name = "task_manager/worker_detail.html"
-    queryset = Worker.objects.all().select_related("position").prefetch_related("tasks")
+    queryset = (
+        Worker.objects.all()
+        .select_related("position")
+        .prefetch_related("tasks")
+    )
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -89,23 +111,31 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
     template_name = "task_manager/task_list.html"
-    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees")
+    queryset = (
+        Task.objects.all()
+        .select_related("task_type")
+        .prefetch_related("assignees")
+    )
     paginate_by = 8
 
     def get_context_data(self, **kwargs) -> dict:
         context = super(TaskListView, self).get_context_data(**kwargs)
         context["today"] = date.today()
         name_or_description = self.request.GET.get("name_or_description", "")
-        context["search_form"] = TaskNameDescriptionSearchForm(initial={"name_or_description": name_or_description})
+        context["search_form"] = TaskNameDescriptionSearchForm(
+            initial={"name_or_description": name_or_description}
+        )
         return context
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         queryset = super().get_queryset()
         sort_by = self.request.GET.get("sort", "deadline")
         form = TaskNameDescriptionSearchForm(self.request.GET)
+        search = form.cleaned_data["name_or_description"]
         if form.is_valid():
             queryset = queryset.filter(
-                Q(name__icontains=form.cleaned_data["name_or_description"]) | Q(description__icontains=form.cleaned_data["name_or_description"]),
+                Q(name__icontains=search)
+                | Q(description__icontains=search)
             )
 
         allowed_sorts = [
@@ -137,6 +167,7 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
         context["today"] = date.today()
         return context
 
+
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
     fields = "__all__"
@@ -152,7 +183,7 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 @require_POST
-def task_assign_view(request: HttpRequest, pk: int):
+def task_assign_view(request: HttpRequest, pk: int) -> HttpResponse:
     user = request.user
     task = Task.objects.get(pk=pk)
     if user in task.assignees.all():
@@ -230,4 +261,3 @@ def task_toggle_status_view(request: HttpRequest, pk: int) -> HttpResponse:
 @login_required
 def profile_redirect(request: HttpRequest) -> HttpResponse:
     return redirect("task_manager:worker-detail", pk=request.user.pk)
-
