@@ -20,12 +20,18 @@ class PublicPositionTests(TestCase):
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_position_update_login_required(self):
-        url = reverse("task_manager:position-update", kwargs={"pk": self.position.pk})
+        url = reverse(
+            "task_manager:position-update",
+            kwargs={"pk": self.position.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
     def test_position_delete_login_required(self):
-        url = reverse("task_manager:position-delete", kwargs={"pk": self.position.pk})
+        url = reverse(
+            "task_manager:position-delete",
+            kwargs={"pk": self.position.pk}
+        )
         response = self.client.get(url)
         self.assertRedirects(response, reverse("login") + "?next=" + url)
 
@@ -68,27 +74,42 @@ class PrivatePositionTests(TestCase):
         form_data = {
             "name": "valid_name"
         }
-        response = self.client.post(reverse("task_manager:position-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:position-create"),
+            data=form_data
+        )
         new_position = Position.objects.get(name=form_data["name"])
         self.assertEqual(new_position.name, form_data["name"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:position-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:position-list")
+        )
 
     def test_position_create_post_with_invalid_data(self):
         form_data = {
             "name": ""
         }
-        response = self.client.post(reverse("task_manager:position-create"), data=form_data)
+        response = self.client.post(
+            reverse("task_manager:position-create"),
+            data=form_data
+        )
         new_position = Position.objects.filter(name=form_data["name"])
         self.assertFalse(new_position.exists())
         self.assertEqual(response.status_code, 200)
 
     def test_position_update_returns_200(self):
-        url = reverse("task_manager:position-update", kwargs={"pk": self.position.pk})
+        url = reverse(
+            "task_manager:position-update",
+            kwargs={"pk": self.position.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_position_update_get_is_pre_populated(self):
-        url = reverse("task_manager:position-update", kwargs={"pk": self.position.pk})
+        url = reverse(
+            "task_manager:position-update",
+            kwargs={"pk": self.position.pk}
+        )
         response = self.client.get(url)
         self.assertContains(response, self.position.name)
 
@@ -96,18 +117,37 @@ class PrivatePositionTests(TestCase):
         form_data = {
             "name": "updated_name"
         }
-        response = self.client.post(reverse("task_manager:position-update", kwargs={"pk": self.position.pk}), data=form_data)
+        response = self.client.post(
+            reverse(
+                "task_manager:position-update",
+                kwargs={"pk": self.position.pk}),
+                data=form_data
+        )
         self.position.refresh_from_db()
         self.assertEqual(self.position.name, form_data["name"])
-        self.assertRedirects(response, expected_url=reverse("task_manager:position-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:position-list")
+        )
 
     def test_position_delete_returns_200(self):
-        url = reverse("task_manager:position-delete", kwargs={"pk": self.position.pk})
+        url = reverse(
+            "task_manager:position-delete",
+            kwargs={"pk": self.position.pk}
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_position_delete_post(self):
-        response = self.client.post(reverse("task_manager:position-delete", kwargs={"pk": self.position.pk}))
+        response = self.client.post(
+            reverse(
+                "task_manager:position-delete",
+                kwargs={"pk": self.position.pk}
+            )
+        )
         position = Position.objects.filter(name=self.position.name)
         self.assertFalse(position.exists())
-        self.assertRedirects(response, expected_url=reverse("task_manager:position-list"))
+        self.assertRedirects(
+            response,
+            expected_url=reverse("task_manager:position-list")
+        )
