@@ -1,16 +1,9 @@
-from datetime import date, timedelta
-
+from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from task_manager.models import Task, TaskType
-
-
-def get_future_weekday():
-    d = date.today() + timedelta(days=1)
-    while d.weekday() >= 5:
-        d += timedelta(days=1)
-    return d
+from .utils import get_future_weekday
 
 
 class PublicTaskTests(TestCase):
