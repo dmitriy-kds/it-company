@@ -472,3 +472,38 @@ footer a:hover { color: var(--accent); }
     font-family: "DM Mono", monospace;
     margin-bottom: 0;
 }
+
+/* ── Pagination ────────────────────────────── */
+.pagination-wrapper {
+    margin-top: 2rem;
+}
+
+.pagination .page-link {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: #555;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    padding: 0.45rem 0.85rem;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+}
+
+.pagination .page-link:hover {
+    background: #f0f5ff;
+    color: var(--accent);
+    border-color: rgba(0, 102, 255, 0.2);
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-link.page-current {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    cursor: default;
+}
+
+.pagination .page-item.active .page-link:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
