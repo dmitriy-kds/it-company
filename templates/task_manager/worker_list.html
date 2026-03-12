@@ -1,31 +1,50 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 
+{% block title %}<title>Team — Task Manager</title>{% endblock %}
+
 {% block content %}
-  <a class="btn btn-primary" href="{% url 'task_manager:worker-create' %}">Add employee</a>
-  <a class="btn btn-primary" href="{% url 'task_manager:position-list' %}">Manage positions</a>
-  <br>
-  <br>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Manager</div>
+    <h1 class="page-title">Team</h1>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'task_manager:position-list' %}" class="btn-secondary-action">Positions</a>
+    <a href="{% url 'task_manager:worker-create' %}" class="btn-primary-action">+ Add Employee</a>
+  </div>
+</div>
+
+<div class="search-bar">
   <form action="" method="GET">
     {{ search_form|crispy }}
-    <input type="submit" value="🔎">
+    <button type="submit" class="search-submit">🔎</button>
   </form>
+</div>
+
+<div class="list-card">
   {% for worker in worker_list %}
-    <ul>
-      <li class="list-group-item d-flex {% if user == worker %}active{% endif %} justify-content-between align-items-center">
-        <a href="{% url 'task_manager:worker-detail' pk=worker.pk%}"
-        class="{% if user == worker %}text-dark{% endif %}">
-          {{ worker.first_name }} {{ worker.last_name }}, {{ worker.position }}
+    <div class="list-row {% if worker == user %}list-row-highlight{% endif %}">
+      <a href="{% url 'task_manager:worker-detail' pk=worker.pk %}" class="list-row-main">
+        <span class="list-row-name">
+          {{ worker.first_name }} {{ worker.last_name }}
           {% if worker == user %}
-            (ME)
+            <span class="me-badge">me</span>
           {% endif %}
-        </a>
-        <span>
-          <a class="text-decoration-none" href="{% url 'task_manager:worker-update' pk=worker.pk%}">📝</a>
-          <a class="text-decoration-none" href="{% url 'task_manager:worker-delete' pk=worker.pk%}">❌</a>
         </span>
-      </li>
-    </ul>
+        <span class="list-row-meta">{{ worker.position|default:"No position" }}</span>
+      </a>
+      <div class="list-row-actions">
+        <a href="{% url 'task_manager:worker-update' pk=worker.pk %}" class="row-action-btn" title="Edit">✏️</a>
+        <a href="{% url 'task_manager:worker-delete' pk=worker.pk %}" class="row-action-btn" title="Delete">🗑</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="list-empty">No employees found.</div>
   {% endfor %}
-  {% include "includes/pagination.html" %}
+</div>
+
+{% include "includes/pagination.html" %}
+
 {% endblock %}
