@@ -1,10 +1,13 @@
 from datetime import date, timedelta
-
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-
-from task_manager.models import TaskType, Position, Task, validate_task_deadline
+from task_manager.models import (
+    TaskType,
+    Position,
+    Task,
+    validate_task_deadline
+)
 
 
 class ModelsTests(TestCase):
@@ -45,14 +48,18 @@ class ModelsTests(TestCase):
     def test_worker_str_with_position(self):
         self.assertEqual(
             str(self.worker),
-            f"{self.worker.first_name} {self.worker.last_name}, {self.worker.position}"
+            f"{self.worker.first_name} "
+            f"{self.worker.last_name}, "
+            f"{self.worker.position}"
         )
 
     def test_worker_str_without_position(self):
         self.worker.position = None
         self.assertEqual(
             str(self.worker),
-            f"{self.worker.first_name} {self.worker.last_name}, No position"
+            f"{self.worker.first_name} "
+            f"{self.worker.last_name}, "
+            f"No position"
         )
 
     def test_task_str(self):
