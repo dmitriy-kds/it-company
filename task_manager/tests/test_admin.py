@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib import admin
-
 from task_manager.models import Worker, Position, TaskType, Task
 
 
@@ -30,7 +29,10 @@ class AdminSiteTests(TestCase):
         self.assertIn("position", worker_admin.list_display)
 
     def test_worker_position_in_fieldsets(self):
-        url = reverse("admin:task_manager_worker_change", args=[self.worker.id])
+        url = reverse(
+            "admin:task_manager_worker_change",
+            args=[self.worker.id]
+        )
         response = self.client.get(url)
         self.assertContains(response, "Position:")
 
