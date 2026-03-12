@@ -1,12 +1,35 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
+{% block title %}<title>Delete Employee — Task Manager</title>{% endblock %}
 
 {% block content %}
-  <h3>You're about to delete user {{ worker.username }}</h3>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Team</div>
+    <h1 class="page-title">Delete Employee</h1>
+  </div>
+</div>
+
+<div class="form-card">
+  <div class="delete-warning">
+    <div class="delete-warning-icon">⚠</div>
+    <div>
+      <div class="delete-warning-title">Are you sure?</div>
+      <div class="delete-warning-subtitle">
+        You are about to permanently delete <span class="delete-target">{{ worker.username }}</span>.
+        This action cannot be undone.
+      </div>
+    </div>
+  </div>
+
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form|crispy }}
-    <a class="btn btn-primary" href="{% url 'task_manager:worker-list' %}">Back</a>
-    <input class="btn btn-danger" type="submit" value="Confirm delete">
+    <div class="form-actions">
+      <button type="submit" class="btn-danger-action">Delete Employee</button>
+      <a href="{% url 'task_manager:worker-list' %}" class="btn-secondary-action">← Cancel</a>
+    </div>
   </form>
+</div>
+
 {% endblock %}
