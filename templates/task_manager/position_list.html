@@ -1,20 +1,31 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
+{% block title %}<title>Positions — Task Manager</title>{% endblock %}
 
 {% block content %}
-  <a class="btn btn-primary" href="{% url 'task_manager:position-create' %}">Create position</a>
-  <br>
-  <br>
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Manager</div>
+    <h1 class="page-title">Positions</h1>
+  </div>
+  <a href="{% url 'task_manager:position-create' %}" class="btn-primary-action">+ Create Position</a>
+</div>
+
+<div class="list-card">
   {% for position in position_list %}
-    <ul>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ position.name }}
-        <span>
-          <a class="text-decoration-none" href="{% url 'task_manager:position-update' pk=position.pk%}">📝</a>
-          <a class="text-decoration-none" href="{% url 'task_manager:position-delete' pk=position.pk%}">❌</a>
-        </span>
-      </li>
-    </ul>
+    <div class="list-row">
+      <span class="list-row-name">{{ position.name }}</span>
+      <div class="list-row-actions">
+        <a href="{% url 'task_manager:position-update' pk=position.pk %}" class="row-action-btn" title="Edit">✏️</a>
+        <a href="{% url 'task_manager:position-delete' pk=position.pk %}" class="row-action-btn" title="Delete">🗑</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="list-empty">No positions found.</div>
   {% endfor %}
-  {% include "includes/pagination.html" %}
+</div>
+
+{% include "includes/pagination.html" %}
+
 {% endblock %}
