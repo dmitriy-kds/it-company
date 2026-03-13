@@ -1,4 +1,5 @@
 from datetime import date
+
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,14 +9,15 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.decorators.http import require_POST
-from .forms import (
+
+from task_manager.forms import (
     WorkerCreationForm,
     WorkerUpdateForm,
     TaskNameDescriptionSearchForm,
     WorkerFirstLastNameSearchForm,
     TaskCreateForm
 )
-from .models import Task, Worker, Position, TaskType
+from task_manager.models import Task, Worker, Position, TaskType
 
 
 def index(request: HttpRequest) -> HttpResponse:
