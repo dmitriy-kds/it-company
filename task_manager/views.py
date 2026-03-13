@@ -29,7 +29,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_new_tasks": Task.objects.filter(status="New").count(),
         "num_completed_tasks": Task.objects.filter(status="Done").count(),
         "num_in_progress_tasks": Task.objects.filter(
-            tatus="In Progress"
+            status="In Progress"
         ).count(),
         "counter": counter,
     }
