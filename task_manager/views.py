@@ -61,8 +61,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
             .prefetch_related("tasks")
         )
         form = WorkerFirstLastNameSearchForm(self.request.GET)
-        search = form.cleaned_data["first_or_last_name"]
         if form.is_valid():
+            search = form.cleaned_data["first_or_last_name"]
             return queryset.filter(
                 Q(first_name__icontains=search)
                 | Q(last_name__icontains=search)
@@ -131,8 +131,8 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         queryset = super().get_queryset()
         sort_by = self.request.GET.get("sort", "deadline")
         form = TaskNameDescriptionSearchForm(self.request.GET)
-        search = form.cleaned_data["name_or_description"]
         if form.is_valid():
+            search = form.cleaned_data["name_or_description"]
             queryset = queryset.filter(
                 Q(name__icontains=search)
                 | Q(description__icontains=search)
