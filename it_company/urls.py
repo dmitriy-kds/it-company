@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+
 from task_manager.views import profile_redirect
 
 urlpatterns = [
