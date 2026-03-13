@@ -2,8 +2,9 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+
 from task_manager.models import Task, TaskType
-from .utils import get_future_weekday
+from task_manager.tests.utils import get_future_weekday
 
 
 class PublicTaskTests(TestCase):
