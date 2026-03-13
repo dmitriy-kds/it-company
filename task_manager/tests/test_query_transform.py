@@ -1,4 +1,5 @@
 from django.test import TestCase, RequestFactory
+
 from task_manager.templatetags.query_transform import query_transform
 
 
