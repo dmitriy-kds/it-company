@@ -1,8 +1,14 @@
 from django.test import TestCase
-from task_manager.forms import WorkerCreationForm, TaskCreateForm, WorkerUpdateForm, TaskNameDescriptionSearchForm, \
-    WorkerFirstLastNameSearchForm
+
 from task_manager.models import TaskType, Position
-from .utils import get_future_weekday, get_future_sunday
+from task_manager.tests.utils import get_future_weekday, get_future_sunday
+from task_manager.forms import (
+    WorkerCreationForm,
+    TaskCreateForm,
+    WorkerUpdateForm,
+    TaskNameDescriptionSearchForm,
+    WorkerFirstLastNameSearchForm
+)
 
 
 class FormTests(TestCase):
