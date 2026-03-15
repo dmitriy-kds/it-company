@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ worker.first_name }} {{ worker.last_name }} — Task Manager</title>{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Team</div>
+    <h1 class="page-title">
+      {{ worker.first_name }} {{ worker.last_name }}
+      {% if user == worker %}<span class="me-badge">me</span>{% endif %}
+    </h1>
+    <div class="worker-position">{{ worker.position|default:"No position" }}</div>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'task_manager:worker-update' pk=worker.pk %}" class="btn-secondary-action">✏️ Edit</a>
+    <a href="{% url 'task_manager:worker-list' %}" class="btn-secondary-action">← Back</a>
+  </div>
+</div>
+
+<div class="section-label">
+  {% if user == worker %}My Tasks{% else %}Tasks{% endif %}
+</div>
+
+<div class="table-card">
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Deadline</th>
+        <th>Priority</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in worker.tasks.all %}
+        <tr class="
+          {% if task.status == 'Done' %}row-done
+          {% elif task.priority == 4 %}row-urgent
+          {% elif task.deadline < today %}row-overdue
+          {% endif %}
+        ">
+          <td class="text-muted mono-text">{{ forloop.counter }}</td>
+          <td>
+            <a href="{% url 'task_manager:task-detail' pk=task.pk %}" class="table-link">
+              {{ task.name }}
+            </a>
+          </td>
+          <td class="text-muted">{{ task.description }}</td>
+          <td><span class="type-badge">{{ task.task_type.name }}</span></td>
+          <td class="mono-text {% if task.status != 'Done' and task.deadline < today %}text-danger{% endif %}">
+            {{ task.deadline }}
+          </td>
+          <td class="{% if task.status != 'Done' and task.priority == 4 %}text-warning{% endif %}">
+            {{ task.get_priority_display }}
+          </td>
+          <td><span class="status-badge status-{{ task.status|lower|slugify }}">{{ task.status }}</span></td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7" class="list-empty">No tasks assigned.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

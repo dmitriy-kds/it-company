@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Positions — Task Manager</title>{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Manager</div>
+    <h1 class="page-title">Positions</h1>
+  </div>
+  <a href="{% url 'task_manager:position-create' %}" class="btn-primary-action">+ Create Position</a>
+</div>
+
+<div class="list-card">
+  {% for position in position_list %}
+    <div class="list-row">
+      <span class="list-row-name">{{ position.name }}</span>
+      <div class="list-row-actions">
+        <a href="{% url 'task_manager:position-update' pk=position.pk %}" class="row-action-btn" title="Edit">✏️</a>
+        <a href="{% url 'task_manager:position-delete' pk=position.pk %}" class="row-action-btn" title="Delete">🗑</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="list-empty">No positions found.</div>
+  {% endfor %}
+</div>
+
+{% include "includes/pagination.html" %}
+
+{% endblock %}

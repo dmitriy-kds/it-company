@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Dashboard — Task Manager</title>{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'task_manager/css/styles.css' %}">
+<div class="dashboard-header">
+  <h1>Dashboard</h1>
+  <div class="subtitle">Overview — Task Manager</div>
+</div>
+
+<!-- Team & Positions -->
+<div class="section-label">Team</div>
+<div class="row">
+  <div class="col-md-6 mb-3">
+    <div class="stat-card" style="--card-accent: #0066ff;">
+      <div class="stat-label">Employees</div>
+      <div class="stat-value count-up">{{ num_employees }}</div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-3">
+    <div class="stat-card" style="--card-accent: #6c757d;">
+      <div class="stat-label">Specialities</div>
+      <div class="stat-value count-up">{{ num_positions }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tasks -->
+<div class="section-label">Tasks</div>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <div class="stat-card" style="--card-accent: #1a1a1a;">
+      <div class="stat-label">Total</div>
+      <div class="stat-value count-up">{{ num_tasks }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="stat-card accent" style="--card-accent: #0066ff;">
+      <div class="stat-label">New</div>
+      <div class="stat-value count-up">{{ num_new_tasks }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="stat-card accent" style="--card-accent: #f59e0b;">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-value count-up">{{ num_in_progress_tasks }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="stat-card accent" style="--card-accent: #10b981;">
+      <div class="stat-label">Completed</div>
+      <div class="stat-value count-up">{{ num_completed_tasks }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="views-pill">
+  <span class="views-dot"></span>
+  Page views: <strong class="count-up">{{ counter }}</strong>
+</div>
+
+{% endblock %}

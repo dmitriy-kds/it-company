@@ -1,0 +1,1063 @@
+/* ── Variables ────────────────────────────── */
+:root {
+    --accent: #0066ff;
+    --border: #e8e8e8;
+    --text-muted: #999;
+    --sidebar-width: 240px;
+}
+
+/* ── Base ────────────────────────────── */
+* { box-sizing: border-box; }
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background-color: #fafafa;
+    background-image:
+        linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: #1a1a1a;
+    min-height: 100vh;
+}
+
+.alert {
+    border-radius: 6px;
+    border: none;
+    font-size: 0.875rem;
+}
+
+/* ── Layout ────────────────────────────── */
+#main-wrapper {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#content {
+    flex: 1;
+    padding: 2.5rem 3rem;
+}
+
+/* ── Sidebar ────────────────────────────── */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--sidebar-width);
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    z-index: 100;
+}
+
+.nav-brand {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+    display: block;
+    text-decoration: none;
+}
+
+.nav-brand:hover {
+    text-decoration: none;
+    color: var(--accent);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.25rem;
+    border-radius: 6px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+}
+
+.sidebar-nav a:hover {
+    background: #f0f5ff;
+    color: var(--accent);
+    border-color: rgba(0, 102, 255, 0.1);
+    text-decoration: none;
+}
+
+.sidebar-nav a.active {
+    background: #f0f5ff;
+    color: var(--accent);
+    font-weight: 500;
+    border-color: rgba(0, 102, 255, 0.1);
+}
+
+.nav-icon {
+    width: 16px;
+    margin-right: 0.65rem;
+    opacity: 0.5;
+    font-size: 0.8rem;
+}
+
+.sidebar-user {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-username-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #bbb;
+    margin-bottom: 0.3rem;
+}
+
+.sidebar-username {
+    font-family: "DM Mono", monospace;
+    font-size: 0.8rem;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-username:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.btn-logout {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: #888;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: "DM Mono", monospace;
+    letter-spacing: 0.05em;
+    width: 100%;
+}
+
+.btn-logout:hover {
+    border-color: #ff3b3b;
+    color: #ff3b3b;
+    background: #fff5f5;
+}
+
+.btn-login {
+    display: block;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: "DM Mono", monospace;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+}
+
+.btn-login:hover {
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ── Footer ────────────────────────────── */
+footer {
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+    padding: 1rem 3rem;
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+footer a:hover { color: var(--accent); }
+
+/* ── Dashboard ────────────────────────────── */
+.dashboard-header {
+    margin-bottom: 2.5rem;
+}
+
+.dashboard-header h1 {
+    font-family: "DM Mono", monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-header .subtitle {
+    font-size: 0.8rem;
+    color: #999;
+    font-family: "DM Mono", monospace;
+    letter-spacing: 0.05em;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.08);
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, #e8e8e8);
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: var(--card-accent, #e8e8e8);
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.stat-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #999;
+    margin-bottom: 0.6rem;
+}
+
+.stat-value {
+    font-family: "DM Mono", monospace;
+    font-size: 2.4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #1a1a1a;
+}
+
+.stat-card.accent .stat-value {
+    color: var(--card-accent);
+}
+
+.section-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #bbb;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e8e8e8;
+}
+
+.views-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f5f5f5;
+    border: 1px solid #e8e8e8;
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 2rem;
+}
+
+.views-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0066ff;
+    animation: pulse 2s infinite;
+}
+
+/* ── Animations ────────────────────────────── */
+.count-up {
+    font-family: "DM Mono", monospace;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+}
+
+.stat-card.shimmer-once::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 100%
+    );
+    background-size: 400px 100%;
+    animation: shimmer 0.8s ease forwards;
+    opacity: 1;
+    top: 0; right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+/* ── Auth ────────────────────────────── */
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 4rem);
+}
+
+.auth-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem 3rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.auth-title {
+    font-family: "DM Mono", monospace;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.auth-error {
+    background: #fff5f5;
+    border: 1px solid #ffdddd;
+    border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+    color: #cc0000;
+    margin-bottom: 1.25rem;
+    font-family: "DM Mono", monospace;
+}
+
+.auth-field {
+    margin-bottom: 1.25rem;
+}
+
+.auth-field-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.auth-field input {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: "DM Sans", sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+}
+
+.auth-field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.08);
+    background: #ffffff;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-family: "DM Mono", monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.5rem;
+}
+
+.auth-submit:hover {
+    background: #0052cc;
+    transform: translateY(-1px);
+}
+
+.auth-submit:active {
+    transform: translateY(0);
+}
+
+/* ── Logout ────────────────────────────── */
+.logout-icon {
+    font-size: 2rem;
+    color: var(--border);
+    margin-bottom: 1rem;
+}
+
+.logout-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: "DM Mono", monospace;
+    margin-bottom: 0;
+}
+
+/* ── Pagination ────────────────────────────── */
+.pagination-wrapper {
+    margin-top: 2rem;
+}
+
+.pagination .page-link {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: #555;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    padding: 0.45rem 0.85rem;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+}
+
+.pagination .page-link:hover {
+    background: #f0f5ff;
+    color: var(--accent);
+    border-color: rgba(0, 102, 255, 0.2);
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-link.page-current {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    cursor: default;
+}
+
+.pagination .page-item.active .page-link:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+/* ── Page Header ────────────────────────────── */
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.page-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+
+.page-title {
+    font-family: "DM Mono", monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.page-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.btn-primary-action {
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    padding: 0.45rem 1rem;
+    background: var(--accent);
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+    border: 1px solid var(--accent);
+}
+
+.btn-primary-action:hover {
+    background: #0052cc;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.btn-secondary-action {
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    padding: 0.45rem 1rem;
+    background: transparent;
+    color: #555;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: 1px solid var(--border);
+}
+
+.btn-secondary-action:hover {
+    background: #f0f5ff;
+    color: var(--accent);
+    border-color: rgba(0, 102, 255, 0.2);
+    text-decoration: none;
+}
+
+/* ── List Card ────────────────────────────── */
+.list-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+
+.list-row:last-child {
+    border-bottom: none;
+}
+
+.list-row:hover {
+    background: #fafcff;
+}
+
+.list-row-highlight {
+    background: #f0f5ff;
+}
+
+.list-row-highlight:hover {
+    background: #e8f0ff;
+}
+
+.list-row-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    flex: 1;
+}
+
+.list-row-main:hover {
+    text-decoration: none;
+}
+
+.list-row-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.list-row-meta {
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+}
+
+.me-badge {
+    font-family: "DM Mono", monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--accent);
+    color: #ffffff;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+}
+
+.list-row-actions {
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.list-row:hover .list-row-actions {
+    opacity: 1;
+}
+
+.row-action-btn {
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: background 0.15s;
+}
+
+.row-action-btn:hover {
+    background: #f0f0f0;
+    text-decoration: none;
+}
+
+.list-empty {
+    padding: 2rem;
+    text-align: center;
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+/* ── Search Bar ────────────────────────────── */
+.search-bar {
+    margin-bottom: 1.5rem;
+}
+
+.search-bar form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    max-width: 400px;
+}
+
+.search-bar .form-group {
+    margin-bottom: 0;
+}
+
+.search-bar label {
+    display: none;
+}
+
+.search-submit {
+    align-self: flex-start;
+    padding: 0.45rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.875rem;
+}
+
+.search-submit:hover {
+    border-color: var(--accent);
+    background: #f0f5ff;
+}
+
+/* ── Form Card ────────────────────────────── */
+.form-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem 2.5rem;
+    max-width: 600px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Worker Detail ────────────────────────────── */
+.worker-position {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+}
+
+/* ── Table Card ────────────────────────────── */
+.table-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-card .table {
+    margin-bottom: 0;
+}
+
+.table-card .table thead th {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    border-top: none;
+    padding: 0.85rem 1rem;
+    font-weight: 500;
+    background: #fafafa;
+}
+
+.table-card .table tbody td {
+    font-size: 0.875rem;
+    padding: 0.85rem 1rem;
+    border-top: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.table-card .table tbody tr:first-child td {
+    border-top: none;
+}
+
+.table-card .table tbody tr:hover {
+    background: #fafcff;
+}
+
+.mono-text {
+    font-family: "DM Mono", monospace;
+    font-size: 0.8rem;
+}
+
+.table-link {
+    color: #1a1a1a;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.table-link:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.type-badge {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #f0f0f0;
+    color: #555;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* Row states */
+.row-done td {
+    opacity: 0.45;
+}
+
+.row-urgent {
+    background: #fffbf0;
+}
+
+.row-overdue {
+    background: #fff5f5;
+}
+
+/* Status badges */
+.status-badge {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.status-new {
+    background: #e8f0ff;
+    color: #0066ff;
+}
+
+.status-in-progress {
+    background: #fff8e8;
+    color: #d97706;
+}
+
+.status-done {
+    background: #e8f5ee;
+    color: #059669;
+}
+
+/* ── Delete Confirm ────────────────────────────── */
+.delete-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #fff5f5;
+    border: 1px solid #ffdddd;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.delete-warning-icon {
+    font-size: 1.25rem;
+    color: #cc0000;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.delete-warning-title {
+    font-family: "DM Mono", monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #cc0000;
+    margin-bottom: 0.3rem;
+}
+
+.delete-warning-subtitle {
+    font-size: 0.825rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.delete-target {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.btn-danger-action {
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    padding: 0.45rem 1rem;
+    background: #cc0000;
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+    border: 1px solid #cc0000;
+    cursor: pointer;
+}
+
+.btn-danger-action:hover {
+    background: #aa0000;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* ── Sort Header ────────────────────────────── */
+.sort-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.sort-arrows {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 0;
+}
+
+.sort-arrows a {
+    font-size: 0.6rem;
+    color: #bbb;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: color 0.15s;
+}
+
+.sort-arrows a:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ── Task Detail ────────────────────────────── */
+.detail-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-row-last {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    width: 90px;
+    flex-shrink: 0;
+}
+
+.detail-description {
+    font-size: 0.875rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+.detail-section-title {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: #fafafa;
+}
+
+.btn-toggle-status {
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-toggle-status:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.overdue-tag {
+    font-family: "DM Mono", monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #fff0f0;
+    color: #cc0000;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    margin-left: 0.4rem;
+}
+
+.assignee-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.assignee-row:last-child {
+    border-bottom: none;
+}
+
+.assignee-row:hover {
+    background: #fafcff;
+    text-decoration: none;
+}
+
+.assignee-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #f0f5ff;
+    border: 1px solid rgba(0, 102, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--accent);
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+.assignee-name {
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    font-weight: 500;
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}<title>{% if object %}Update{% else %}Create{% endif %} Task Type — Task Manager</title>{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Types</div>
+    <h1 class="page-title">{% if object %}Update{% else %}Create{% endif %} Task Type</h1>
+  </div>
+  <a href="{% url 'task_manager:task-type-list' %}" class="btn-secondary-action">← Back</a>
+</div>
+
+<div class="form-card">
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-actions">
+      <button type="submit" class="btn-primary-action">
+        {% if object %}Save Changes{% else %}Create Task Type{% endif %}
+      </button>
+      <a href="{% url 'task_manager:task-type-list' %}" class="btn-secondary-action">Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

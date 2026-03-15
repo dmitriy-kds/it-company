@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Delete Task Type — Task Manager</title>{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="page-label">Task Types</div>
+    <h1 class="page-title">Delete Task Type</h1>
+  </div>
+</div>
+
+<div class="form-card">
+  <div class="delete-warning">
+    <div class="delete-warning-icon">⚠</div>
+    <div>
+      <div class="delete-warning-title">Are you sure?</div>
+      <div class="delete-warning-subtitle">
+        You are about to permanently delete task type <span class="delete-target">{{ object.name }}</span>.
+        This action cannot be undone.
+      </div>
+    </div>
+  </div>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+    <div class="form-actions">
+      <button type="submit" class="btn-danger-action">Delete Task Type</button>
+      <a href="{% url 'task_manager:task-type-list' %}" class="btn-secondary-action">← Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

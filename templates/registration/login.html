@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Login — Task Manager</title>{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="auth-label">Task Manager</div>
+      <h1 class="auth-title">Sign in</h1>
+    </div>
+
+    {% if form.errors %}
+      <div class="auth-error">Invalid credentials — please try again.</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="auth-field">
+          <label class="auth-field-label">{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="auth-submit">Sign in →</button>
+    </form>
+
+  </div>
+</div>
+{% endblock %}
