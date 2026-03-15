@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from it_company import settings
+from django.conf import settings
 
 
 def validate_task_deadline(deadline: date) -> None:
