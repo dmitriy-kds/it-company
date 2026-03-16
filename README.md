@@ -3,6 +3,10 @@
 Django app for managing a small team of IT specialists 
 with employee profiles and simple task flow.
 
+## Check it out
+
+[https://it-company-f6bl.onrender.com/](https://it-company-f6bl.onrender.com/)
+
 ## Installing 
 
 Python3.12 must be already installed
